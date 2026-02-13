@@ -1,15 +1,27 @@
 {
   "name": "pace",
   "version": "1.0.0",
-  "description": "",
   "main": "server.js",
-  "scripts": {
-    "test": "jest"
-  },
+  "description": "Full Stack Lab2",
   "keywords": [],
-  "author": "",
+  "homepage": "https://github.com/DhwaniDobariya12/cs696#readme",
+  "bugs": {
+    "url": "https://github.com/DhwaniDobariya12/cs696/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DhwaniDobariya12/cs696.git"
+  },
   "license": "ISC",
+  "author": "Dhwani",
   "type": "commonjs",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "jest",
+    "start": "node server.js"
+  },
   "dependencies": {
     "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
