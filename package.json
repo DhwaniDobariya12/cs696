@@ -1,6 +1,7 @@
 {
   "name": "pace",
   "version": "1.0.0",
+  "main": "server.js",
   "description": "Full Stack Lab2",
   "keywords": [],
   "homepage": "https://github.com/DhwaniDobariya12/cs696#readme",
@@ -14,7 +15,6 @@
   "license": "ISC",
   "author": "Dhwani",
   "type": "commonjs",
-  "main": "server.js",
   "directories": {
     "test": "tests"
   },
