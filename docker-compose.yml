@@ -1,4 +1,36 @@
 services:
+  loki:
+    image: grafana/loki:latest
+    container_name: pace-loki
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    restart: unless-stopped
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pace-auth-api
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://localhost:3100/loki/api/v1/push"
+    env_file:
+      - .env
+    environment:
+      # override .env for Docker networking because you need to address mongo by the container name below
+      MONGODB_URL: mongodb://mongo:27017/user-auth
+      NODE_ENV: development
+    ports:
+      - "8000:8000"
+    depends_on:
+      mongo:
+        condition: service_healthy
+      loki:
+        condition: service_started
+    restart: unless-stopped
+
   api:
     build:
       context: .
