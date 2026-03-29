@@ -1,3 +1,4 @@
+// This is a comment for Lab 7
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
