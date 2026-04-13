@@ -31,27 +31,13 @@ services:
         condition: service_started
     restart: unless-stopped
 
-  api:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: pace-auth-api
-    env_file:
-      - .env
-    environment:
-      # override .env for Docker networking because you need to address mongo by the container name below
-      MONGODB_URL: mongodb://mongo:27017/user-auth
-      NODE_ENV: development
-    ports:
-      - "8000:8000"
-    depends_on:
-      mongo:
-        condition: service_healthy
-    restart: unless-stopped
-
   mongo:
     image: mongo:7
     container_name: pace-mongo
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://localhost:3100/loki/api/v1/push"
     ports:
       - "27017:27017"
     volumes:
@@ -62,7 +48,7 @@ services:
       timeout: 5s
       retries: 10
     restart: unless-stopped
- 
+
   grafana:
     image: grafana/grafana:latest
     container_name: pace-grafana
@@ -72,13 +58,12 @@ services:
       GF_SECURITY_ADMIN_USER: pace_user
       GF_SECURITY_ADMIN_PASSWORD: pace_pass
     healthcheck:
-      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3000/api/health"]
-      interval: 10s
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/api/health || exit 1" ]
+      interval: 20s
       timeout: 5s
-      retries: 10
+      retries: 3
       start_period: 30s
     restart: unless-stopped
 
 volumes:
   mongo_data:
-
